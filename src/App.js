@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -7,7 +8,7 @@ import {
   useLocation
 } from 'react-router-dom';
 
-function Page1() {
+function UserDetails() {
   const [formData, setFormData] = useState({});
   const history = useHistory();
 
@@ -19,7 +20,7 @@ function Page1() {
   function handleSubmit(event) {
     event.preventDefault();
     history.push({
-      pathname: '/page2',
+      pathname: '/display',
       state: { formData }
     });
   }
@@ -41,7 +42,7 @@ function Page1() {
   );
 }
 
-function Page2() {
+function Display() {
   const location = useLocation();
   const formData = location.state.formData;
 
@@ -68,15 +69,15 @@ function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Page 1</Link>
+              <Link to="/">User Details</Link>
             </li>
             <li>
-              <Link to="/page2">Page 2</Link>
+              <Link to="/display">Display</Link>
             </li>
           </ul>
         </nav>
-        <Route path="/" exact component={Page1} />
-        <Route path="/page2" component={Page2} />
+        <Route path="/" exact component={UserDetails} />
+        <Route path="/display" component={Display} />
       </div>
     </Router>
   );
