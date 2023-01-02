@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useHistory,
-  useLocation
-} from 'react-router-dom';
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation } from 'react-router-dom';
+
+
 
 function UserDetails() {
   const [formData, setFormData] = useState({});
-  const history = useHistory();
+  const history = useNavigate();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -19,13 +16,11 @@ function UserDetails() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    history.push({
-      pathname: '/display',
+    history('display', {
       state: { formData }
     });
   }
-
-  return (
+return (
     <form onSubmit={handleSubmit}>
       <label>
         Name:
@@ -37,31 +32,31 @@ function UserDetails() {
         <input type="email" name="email" onChange={handleChange} />
       </label>
       <br />
-      <button type="submit">Submit</button>
+      <button type="submit" value="Submit">Submit</button>
     </form>
   );
 }
 
 function Display() {
   const location = useLocation();
-  const formData = location.state.formData;
+  console.log(location.state);
+  const formData = location.state?.formData;
 
   return (
     <table>
       <tbody>
         <tr>
           <th>Name</th>
-          <td>{formData.name}</td>
+          <td>{formData?.name}</td>
         </tr>
         <tr>
           <th>Email</th>
-          <td>{formData.email}</td>
+          <td>{formData?.email}</td>
         </tr>
       </tbody>
     </table>
   );
 }
-
 function App() {
   return (
     <Router>
@@ -76,9 +71,12 @@ function App() {
             </li>
           </ul>
         </nav>
-        <Route path="/" exact component={UserDetails} />
-        <Route path="/display" component={Display} />
-      </div>
+        <Routes>
+        <Route path="/" exact element={<UserDetails />} />
+        <Route path="/display" element={
+          <Display />} />
+        </Routes>
+       </div>
     </Router>
   );
 }
